@@ -56,9 +56,17 @@ $api->version('v1', function ($api) {
             });
         });
     });
-    $api->group(['namespace' => 'App\Api\Controllers'], function ($api) {
-        $api->group(['middleware' => 'jwt.api.auth'], function ($api) {
-        });
+
+    $api->group(['namespace' => 'App\Api\SendModule\Controllers'], function ($api) {
+       /* $api->group(['middleware' => 'apiweb'], function ($api) {
+            $api->group(['middleware' => 'jwt.api.auth'], function ($api) {
+                 $api->group(['middleware' => 'checkphone'], function ($api) {
+                   
+                 });
+            });
+        });*/
+           $api->post('/user/send/carNum', 'SendController@carNum');
+           $api->post('/user/send/price', 'SendController@price');
     });
 
 

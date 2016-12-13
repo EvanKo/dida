@@ -45,7 +45,10 @@ class AuthController extends BaseController
         $user['random'] = rand(1000000,10000000);
         // return $user;
         $token = JWTAuth::fromUser($user);
-        return response()->json(compact('token'));
+        $result['code'] = 200;
+        $result['message']= 'ok';
+        $result['data']= $token;
+        return response()->json($result);
     }
 
 

@@ -33,18 +33,18 @@ class UserChangeInfoController extends BaseController
 
     public function changeInfo(changeUSerInfoRequest $request)
     {
-	
+
         $updateData['tel'] = $request->input('tel');
         $updateData['nickname'] = $request->input('nickname');
         if(empty( $updateData )){
  	    $result = $this->returnMsg('204','data is empty');
     	    return response()->json($result);
 	}
-       
+
 	$num = $request->input('num');
 	$num = 'k'.strval($num);
 	$value = Session::get($num, 'default');
-	
+
 	if ($value != 'default') {
 		$token = JWTAuth::getToken();
 		$user = JWTAuth::toUser($token);
@@ -56,7 +56,7 @@ class UserChangeInfoController extends BaseController
 		return response()->json($result);
 
 	}else {
-	        $result = $this->returnMsg('500','ERROR CODE');
+	        $result = $this->returnMsg('57001','ERROR CODE');
         	return response()->json($result);
 	}
 

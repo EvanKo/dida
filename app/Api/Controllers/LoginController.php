@@ -129,7 +129,7 @@ class LoginController extends BaseController
     	        return response()->json($result);
             }
         }
-            $result = $this->returnMsg('500',$resp);
+            $result = $this->returnMsg('52001',$resp);
     	    return response()->json($result);
     }
     /**
@@ -164,10 +164,10 @@ class LoginController extends BaseController
           $token = JWTAuth::fromUser($usr);
           return response()->json(compact('token'));
         }
-        $result = $this->returnMsg('500','ERROR CODE');
+        $result = $this->returnMsg('52002','ERROR CODE');
         return response()->json($result);
       }
-        $result = $this->returnMsg('500','ERROR CODE');
+        $result = $this->returnMsg('52003','ERROR CODE');
         return response()->json($result);
     }
     /**

@@ -136,7 +136,7 @@ class OrderController extends BaseController
       if ($list) {
         return $list;
       }
-      $result = $this->returnMsg('500','error number');
+      $result = $this->returnMsg('54005','error number');
       return response()->json($result);
     }
     /**
@@ -153,11 +153,11 @@ class OrderController extends BaseController
       $ownertel = $ownertel['tel'];
       if ($one) {
         if ($ownertel!=$one['userphone']) {
-          $result = $this->returnMsg('500','NO permission');
+          $result = $this->returnMsg('54003','NO permission');
           return response()->json($result);
         }
       }else{
-        $result = $this->returnMsg('500','error id');
+        $result = $this->returnMsg('54004','error id');
         return response()->json($result);
       }
       $result = $this->returnMsg('200','ok',$one);

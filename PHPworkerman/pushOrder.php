@@ -13,6 +13,11 @@ $worker->onWorkerStart = function($worker)
     $inner_text_worker->onMessage = function($connection, $buffer)
     {
         global $worker;
+
+	//如果没有登陆，这里需要司机端留一个API验证司机token
+	if(checkIfUserLogin($token) != 'ok'){
+		$buffer = "0";
+	}
         // $data数组格式，里面有uid，表示向那个uid的页面推送数据
         $data = json_decode($buffer, true);
         $uid = $data['uid'];
@@ -75,5 +80,34 @@ function sendMessageByUid($uid, $message)
     return false;
 }
 
+function checkIfUserLogin($token){
+
+	$curl = curl_init();
+
+	curl_setopt_array($curl, array(
+	  CURLOPT_PORT => "8000",
+	  CURLOPT_URL => "http://localhost:8000/api/checkDriverLocation",
+	  CURLOPT_RETURNTRANSFER => true,
+	  CURLOPT_ENCODING => "",
+	  CURLOPT_MAXREDIRS => 10,
+	  CURLOPT_TIMEOUT => 30,
+	  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	  CURLOPT_CUSTOMREQUEST => "POST",
+	  CURLOPT_HTTPHEADER => array(
+	    "authorization: Bearer  $token",
+	  ),
+	));
+
+	$response = curl_exec($curl);
+	$err = curl_error($curl);
+
+	curl_close($curl);
+
+	if ($err) {
+	  echo "cURL Error #:" . $err;
+	} else {
+	  return $response;
+	}
+}
 // 运行所有的worker（其实当前只定义了一个）
 Worker::runAll();

@@ -13,7 +13,7 @@ class GetUserFromToken
         $auth = JWTAuth::parseToken();
         if (!$token = $auth->setRequest($request)->getToken()) {
             return response()->json([
-                'code' => '',
+                'code' => '40001',
                 'message' => 'token_not_provided',
                 'data' => '',
             ]);
@@ -22,13 +22,13 @@ class GetUserFromToken
             $user = $auth->authenticate($token);
         } catch (TokenExpiredException $e) {
             return response()->json([
-                'code' => '',
+                'code' => '50001',
                 'message' => 'token_expired',
                 'data' => '',
             ]);
         } catch (JWTException $e) {
             return response()->json([
-                'code' => '',
+                'code' => '50002',
                 'message' => 'token_invalid',
                 'data' => '',
             ]);

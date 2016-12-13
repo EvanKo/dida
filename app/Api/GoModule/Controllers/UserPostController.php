@@ -122,7 +122,7 @@ class UserPostController extends BaseController
             $result = $this->returnMsg('200','ok');
             return response()->json($result);
         } else {
-            $result = $this->returnMsg('500','save order fail');
+            $result = $this->returnMsg('56001','save order fail');
             return response()->json($result);
         }
     }

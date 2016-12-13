@@ -29,11 +29,13 @@ $api->version('v1', function ($api) {
           $api->post('/sess', 'LoginController@sessionSet');
           $api->post('/check', 'LoginController@check');
           $api->group(['middleware' => 'checkphone'], function ($api) {
-             $api->get('/addrecord', 'OrderController@addRecord');
-             $api->post('/setstar', 'OrderController@orderStar');
              $api->post('/back', 'OrderController@orderBack');
-             $api->get('/recordlist', 'OrderController@orderRecordList');
-             $api->get('/recordone','OrderController@orderRecordOne');
+             $api->group(['middleware' => 'finishOrder'], function ($api) {
+               $api->get('/addrecord', 'OrderController@addRecord');
+               $api->post('/setstar', 'OrderController@orderStar');
+               $api->get('/recordlist', 'OrderController@orderRecordList');
+               $api->get('/recordone','OrderController@orderRecordOne');
+             });
              $api->get('/logout','AuthController@logout');
              $api->get('/test','LoginController@test');
            });
@@ -48,9 +50,11 @@ $api->version('v1', function ($api) {
            $api->group(['middleware' => 'checkphone'], function ($api) {
             $api->post('/userCheckOrder', 'GoController@userCheckOrder');
             $api->post('/checkDriverLocation', 'GoController@checkDriverLocation');
-            $api->post('/user/orderSave', 'UserPostController@orderSave');
-            $api->post('/user/carNum', 'UserPostController@carNum');
-            $api->post('/user/price', 'UserPostController@price');
+            $api->group(['middleware' => 'beforeOrder'], function ($api) {  //订单开始前可以访问
+              $api->post('/user/orderSave', 'UserPostController@orderSave');
+              $api->post('/user/carNum', 'UserPostController@carNum');
+              $api->post('/user/price', 'UserPostController@price');
+            });
             $api->post('/user/changeInfo', 'UserChangeInfoController@changeInfo');
             $api->post('/user/sendCode', 'UserChangeInfoController@sessionSet');
            });

@@ -133,7 +133,8 @@ class LoginController extends BaseController
                 return response()->json($result);
             }
         }
-            $result = $this->returnMsg('500', $resp);
+
+            $result = $this->returnMsg('52001', $resp);
             return response()->json($result);
     }
     /**
@@ -171,9 +172,13 @@ class LoginController extends BaseController
             $result = $this->returnMsg('500', 'ERROR CODE');
             return response()->json($result);
         }
-        $result = $this->returnMsg('500', 'ERROR CODE');
+
+        $result = $this->returnMsg('52002', 'ERROR CODE');
         return response()->json($result);
     }
+        $result = $this->returnMsg('52003', 'ERROR CODE');
+        return response()->json($result);
+}
     /**
      *@author Arius
      *@function wechat code test
@@ -181,22 +186,22 @@ class LoginController extends BaseController
      *
      *
      */
-    public function code($request)
-    {
-        $arr = array ('code'=>$_GET['code']);
-        return response()->json(compact('arr'));
-    }
+public function code($request)
+{
+    $arr = array ('code'=>$_GET['code']);
+    return response()->json(compact('arr'));
+}
 
 
-    public function test()
-    {
-        $curl = new Curl();//测试Curl
-      // $curl->get('www.obstacle.cn:7007/api/works');
-      // $response = $curl->response;
-      // $response = json_encode($response,true);
-      // $response = json_decode($response,true);
-        return JWTAuth::toUser();
-        $arr = array ('status'=>"success");
-        return response()->json(compact('arr'));
-    }
+public function test()
+{
+    $curl = new Curl();//测试Curl
+  // $curl->get('www.obstacle.cn:7007/api/works');
+  // $response = $curl->response;
+  // $response = json_encode($response,true);
+  // $response = json_decode($response,true);
+    return JWTAuth::toUser();
+    $arr = array ('status'=>"success");
+    return response()->json(compact('arr'));
+}
 }

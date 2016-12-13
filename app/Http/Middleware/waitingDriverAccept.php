@@ -6,7 +6,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
-class PhoneFromToken
+class waitingDriverAccept
 {
   /**
    *@author Arius
@@ -17,12 +17,16 @@ class PhoneFromToken
     public function handle($request, Closure $next)
     {
         $user=JWTAuth::toUser();
-        if ($user['tel']) {
-          return $next($request);
+        $order = Redis::hgetall("usecar:",$user['tel']);
+        //如果订单没有被接
+        if ($order) {
+            if($order['isAccept']==1){
+                return $next($request);
+            }
         }
         return response()->json([
-            'code' => '51003',
-            'message' => 'tel_not_set',
+            'code' => '58003',
+            'message' => 'NO order waiting for driver arrive,You have can not use this API',
             'data' => '',
         ]);
     }

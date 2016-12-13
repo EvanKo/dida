@@ -17,10 +17,13 @@ class SendController extends BaseController
     {
         parent::__construct();
     }
-    /*
-    *author:824315402@qq.com
+
+    /**
+    *@author 824315402@qq.com
     *
+    *return the number of cars when user needs to create a order
     *
+    *@return $result
     */
     public function carNum(Request $request)
     {
@@ -28,25 +31,43 @@ class SendController extends BaseController
         $result = $query->carNum($request);
         return $result;
     }
+    /**
+    *return the probable price
+    *
+    *@param distance
+    */
     public function price(Request $request)
     {
-        return 19;
+        //temp
+        $query = new UserPostController();
+        $result = $query->price($request);
+        return $result;
     }
+    /**
+    *to save and push order to drivers when the user confirm to create a order
+    *
+    *
+    *@param string $userphone
+    *@return json $result about status
+    */
     public function orderPush(Request $request)
     {
+        //save userphone in Redis
         $userphone = $request->get('userphone');
         $userphone_save = Redis::sadd('userphone', $userphone);
-        //获得出发
+        //get the sender info
         $fromWho = $request->get('fromWho');
-        //获得出发地经纬度
+        //get the position of sender
         $fromPosition = $request->get('fromPosition');
-        //获得目的
+        //get the receiver info
         $toWho = $request->get('toWho');
-        //获得目的地经纬度
-        $toPositon = $request->get('toPositon');
-        //
+        //get the receiver positon
+        $toPosition = $request->get('toPosition');
+        //get the item type
         $type = $request->get('type');
+        //default unaccepted
         $isAccept = 0;
+        //save in Redis
         $query = Redis::hmset(
             'send:'.$userphone,
             'fromWho',
@@ -55,18 +76,33 @@ class SendController extends BaseController
             $fromPosition,
             'toWho',
             $toWho,
-            'toPositon',
-            $toPositon,
+            'toPosition',
+            $toPosition,
             'type',
             $type,
             'isAccept',
             $isAccept
         );
         if ($query) {
+           /* // 建立socket连接到内部推送端口
+            $client = stream_socket_client('tcp://127.0.0.1:5678', $errno, $errmsg, 1);
+            // 推送的数据，包含driverPhone字段，表示是给这个driverPhone推送
+            $data = array(
+                'send:userphone'=> $userphone,
+                'fromWho'       => $fromWho,
+                'fromPosition'  => $fromPosition,
+                'toWho'         => $toWho,
+                'toPosition'     => $toPosition,
+                'type'          => $type,
+                );
+            // 发送数据，注意5678端口是Text协议的端口，Text协议需要在数据末尾加上换行符
+            fwrite($client, json_encode($data)."\n");
+            // 读取推送结果
+            echo fread($client, 8192);*/
             $result = $this->returnMsg('200', 'ok');
             return response()->json($result);
         } else {
-            $result = $this->returnMsg('500', 'save order fail');
+            $result = $this->returnMsg('56001', 'save order fail');
             return response()->json($result);
         }
     }

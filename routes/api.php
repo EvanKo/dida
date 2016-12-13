@@ -40,7 +40,7 @@ $api->version('v1', function ($api) {
         });
     });
 
-
+    //Go module
     $api->group(['namespace' => 'App\Api\GoModule\Controllers'], function ($api) {
         $api->group(['middleware' => 'apiweb'], function ($api) {
             $api->group(['middleware' => 'jwt.api.auth'], function ($api) {
@@ -56,17 +56,17 @@ $api->version('v1', function ($api) {
             });
         });
     });
-
+    //send module
     $api->group(['namespace' => 'App\Api\SendModule\Controllers'], function ($api) {
-       /* $api->group(['middleware' => 'apiweb'], function ($api) {
+        $api->group(['middleware' => 'apiweb'], function ($api) {
             $api->group(['middleware' => 'jwt.api.auth'], function ($api) {
-                 $api->group(['middleware' => 'checkphone'], function ($api) {
-                   
-                 });
+                  $api->group(['middleware' => 'checkphone'], function ($api) {
+                    $api->post('/user/send/carNum', 'SendController@carNum');
+                    $api->post('/user/send/price', 'SendController@price');
+                    $api->post('/user/send/orderPush', 'SendController@orderPush');
+                  });
             });
-        });*/
-           $api->post('/user/send/carNum', 'SendController@carNum');
-           $api->post('/user/send/price', 'SendController@price');
+        });
     });
 
 

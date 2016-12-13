@@ -11,7 +11,8 @@ use App\Http\Requests\PostRequest;
 class UserPostController extends BaseController
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
     }
     /**
@@ -43,8 +44,9 @@ class UserPostController extends BaseController
                 $num = $num+1;
             }
         }
-        $result = $this->returnMsg('200','success',['carNum'=>$num]);
-        return response()->json($result);;
+        $result = $this->returnMsg('200', 'success', ['carNum'=>$num]);
+        return response()->json($result);
+        ;
     }
 
     /**
@@ -57,11 +59,11 @@ class UserPostController extends BaseController
     {
         $distance = $request->get('distance');
         if ($distance<=5) {
-            $result = $this->returnMsg('200','success',['price'=>5]);
+            $result = $this->returnMsg('200', 'success', ['price'=>5]);
             return response()->json($result);
         } else {
             $p = 5+0.5*($distance-5);
-            $result = $this->returnMsg('200','success',['price'=>$p]);
+            $result = $this->returnMsg('200', 'success', ['price'=>$p]);
             return response()->json($result);
         }
     }
@@ -116,13 +118,12 @@ class UserPostController extends BaseController
             $motoType,
             'isAccept',
             $isAccept
-
         );
         if ($query) {
-            $result = $this->returnMsg('200','ok');
+            $result = $this->returnMsg('200', 'ok');
             return response()->json($result);
         } else {
-            $result = $this->returnMsg('500','save order fail');
+            $result = $this->returnMsg('56001', 'save order fail');
             return response()->json($result);
         }
     }
